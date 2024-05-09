@@ -11,6 +11,7 @@ struct ContentView: View {
     
     @State var years: Int?
     @State var months: Int?
+    @State var result: Int?
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -23,6 +24,27 @@ struct ContentView: View {
             Text("Meses")
             TextField("Quantos meses tem seu cão?", value: $months, format: .number)
             Text("Porte")
+            
+            if let result {
+                Text("Seu cachorro tem, em idade humana...")
+                Text("\(result) anos")
+            } else {
+                Image(ImageResource.clarinha)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 150)
+                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+            }
+            
+            Button("Cãocular") {
+                print("Cãocular")
+            }
+            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+            .frame(maxHeight: 50)
+            .background(.indigo)
+            .foregroundStyle(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .bold()
         }
         .textFieldStyle(.roundedBorder)
         .keyboardType(.numberPad)
