@@ -15,6 +15,8 @@ struct ContentView: View {
     @State var color: Color = .indigo600
     
     @State var porteSelected = Porte.pequeno
+    @State var failedInput = false
+    let tituloPreencherCampos = "Preencha campos para cãocular!"
     
     var body: some View {
         NavigationStack {
@@ -48,8 +50,11 @@ struct ContentView: View {
                     if let result {
                         Text("Seu cachorro tem, em idade humana...")
                             .font(.body1)
+                            .frame(maxWidth: .infinity)
                         Text("\(result) anos")
                             .font(.display)
+                            .frame(maxWidth: .infinity)
+                            .contentTransition(.numericText())
                     } else {
                         Image(ImageResource.clarinha)
                             .resizable()
@@ -75,7 +80,11 @@ struct ContentView: View {
                 .keyboardType(.numberPad)
                 .padding()
                 .containerRelativeFrame(.vertical)
+                .animation(.easeInOut.speed(0.5), value: result)
             }
+            .alert(tituloPreencherCampos, isPresented: $failedInput, actions: {
+                Button("Ok", role: .cancel, action: {})
+            })
             .navigationTitle("Cãoculadora")
             .scrollDismissesKeyboard(.immediately)
             .toolbarBackground(.indigo600, for: .navigationBar)
@@ -87,26 +96,29 @@ struct ContentView: View {
 }
 
 //MARK: - Functions
-    extension ContentView{
-        func processYears() { //a funçao recebe nada e retorna void
-            print("Cãocular")
+extension ContentView{
+    func processYears() {
+        //a funçao recebe nada e retorna void
+        //        print("Cãocular")
+        
+        guard let years, let months else {
+            print("campo não preenchido")
+            failedInput = true
+            return
             
-            guard let years, let months else {
-                print("campo não preenchido")
-                return
-                
-            }
-            
-            guard months > 0 || years > 0 else{
-                print("pelo menos um campo tem que ser maior que zero")
-                return
-            }
-            
+        }
+        
+        guard months > 0 || years > 0 else{
+            print("pelo menos um campo tem que ser maior que zero")
+            return
+        }
+        
+        withAnimation(.easeInOut.speed(0.5)){
             result = porteSelected.calcularIdade(deAnoa: years, eMeses: months)
             
-            #Preview {
-                ContentView()
-            }
         }
     }
-
+}
+#Preview {
+    ContentView()
+}
