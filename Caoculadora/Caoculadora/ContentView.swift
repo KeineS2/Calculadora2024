@@ -13,6 +13,7 @@ struct ContentView: View {
     @State var months: Int?
     @State var result: Int?
     
+    
     let portes = ["Pequeno", "Médio", "Grande"]
     @State var porteSelecionado = "Pequeno"
     @State var porteSelected = Porte.pequeno
@@ -61,13 +62,13 @@ struct ContentView: View {
             Spacer()
             
             Button("Cãocular", action: processYears)
-            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-            .frame(maxHeight: 50)
-            .background(.indigo)
-            .foregroundStyle(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .bold()
-            .font(.body1)
+                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                .frame(maxHeight: 50)
+                .background(.indigo)
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .bold()
+                .font(.body1)
         }
         .textFieldStyle(.roundedBorder)
         .keyboardType(.numberPad)
@@ -88,24 +89,10 @@ struct ContentView: View {
             return
         }
         
-        // o resultado vai ser anos * multiplicador + a fraçao do ano em meses * multiplicador
-        //multiplicador: pequeno - 6, médio - 7 e grande - 8
-        let multiplicador: Int
-        switch porteSelected {
-        case .pequeno:
-            multiplicador = 6
-        case .medio:
-            multiplicador = 7
-        case .grande:
-            multiplicador = 8
+        result = porteSelected.calcularIdade(deAnoa: years, eMeses: months)
+        
+        #Preview {
+            ContentView()
         }
-        
-        result =  years * multiplicador + months * multiplicador / 12
-
-        
     }
-}
-
-#Preview {
-    ContentView()
 }
